@@ -27,6 +27,10 @@ class DayOfYear
         //Returns the month, 1 for January, 2 for February, etc.
         int get_day() const {return day;}
         //Returns the day of the month.
+
+        //Making before a friend function. before is a friend of the class but not a member of it.
+        friend bool before(DayOfYear A, DayOfYear B);
+
     private:
         void check_date() const;
         int month;
@@ -95,10 +99,6 @@ void DayOfYear::check_date() const {
 }
 
 
-bool before(DayOfYear A, DayOfYear B);
-
-
-
 int main() {
     DayOfYear day(12, 5);
     day.output();
@@ -118,14 +118,14 @@ int main() {
 
 bool before(DayOfYear A, DayOfYear B) {
     //Months are the same.
-    if(A.get_month() == B.get_month()) {
+    if(A.month == B.month) {
         //A comes Before.
-        if(A.get_day() < B.get_day()) {
+        if(A.day < B.day) {
             return true;
         } else return false;//A is the same or comes after.
     }
     //A comes before.
-    else if(A.get_month() < B.get_month()) { 
+    else if(A.month < B.month) { 
         return true;
     } else return false; //A comes after.
 }
