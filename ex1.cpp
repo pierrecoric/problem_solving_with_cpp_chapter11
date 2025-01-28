@@ -28,8 +28,11 @@ class DayOfYear
         int get_day() const {return day;}
         //Returns the day of the month.
 
+        void set_month(int m) {month = m;}
+        void set_day(int d) {day = d;}
+        
         //Making before a friend function. before is a friend of the class but not a member of it.
-        friend bool before(DayOfYear A, DayOfYear B);
+        friend bool before(const DayOfYear& A, const DayOfYear& B);
 
     private:
         void check_date() const;
@@ -116,7 +119,7 @@ int main() {
 }
 
 
-bool before(DayOfYear A, DayOfYear B) {
+bool before(const DayOfYear& A, const DayOfYear& B) {
     //Months are the same.
     if(A.month == B.month) {
         //A comes Before.
