@@ -21,6 +21,8 @@ class Money {
         //Returns true if amount1 and amount2 have the same value;
         //otherwise, returns false.
 
+        friend bool operator ==(const Money& amount1, const Money& amount2);
+
         Money(long dollars, int cents);
         //Initializes the object so its value represents an amount with the
         //dollars and cents given by the arguments. If the amount is negative,
@@ -85,14 +87,25 @@ Money operator +(const Money& amount1, const Money& amount2) {
     return add(amount1, amount2);
 }
 
+bool equal(const Money& amount1, const Money& amount2) {
+    return (amount1.all_cents == amount2.all_cents);
+}
+
+bool operator ==(const Money& amount1, const Money& amount2) {
+    return equal(amount1, amount2);
+}
 
 
 int main() {
     Money m(10, 50);
-    Money n(2, 50);
+    Money n(10, 50);
     cout << m.get_value() << endl;
     cout << n.get_value() << endl;
-    m = m + n;
-    cout << m.get_value() << endl;
+    //m = m + n;
+    //cout << m.get_value() << endl;
+
+    if(m == n) {
+        cout << "equal" << endl;
+    } else cout << "not equal" << endl;
     return 0;
 }
