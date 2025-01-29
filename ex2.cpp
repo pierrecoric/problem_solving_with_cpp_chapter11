@@ -23,7 +23,7 @@ class Money {
 
         friend bool operator ==(const Money& amount1, const Money& amount2);
 
-        Money operator =(const Money& amount1, Money& amount2);
+        Money operator =(const Money& other);
 
         Money(long dollars, int cents);
         //Initializes the object so its value represents an amount with the
@@ -97,17 +97,30 @@ bool operator ==(const Money& amount1, const Money& amount2) {
     return equal(amount1, amount2);
 }
 
+Money Money::operator =(const Money& other) {
+    if(this != &other) {
+        all_cents = other.all_cents;
+    }
+    return *this;
+}
+
 
 int main() {
     Money m(10, 50);
     Money n(10, 50);
     cout << m.get_value() << endl;
     cout << n.get_value() << endl;
-    //m = m + n;
-    //cout << m.get_value() << endl;
+    m = m + n;
+    cout << m.get_value() << endl;
 
     if(m == n) {
         cout << "equal" << endl;
     } else cout << "not equal" << endl;
+    n = m;
+    if(m == n) {
+        cout << "equal" << endl;
+    } else cout << "not equal" << endl;
+
+
     return 0;
 }
