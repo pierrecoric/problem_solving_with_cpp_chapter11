@@ -23,6 +23,8 @@ class Money {
 
         friend bool operator ==(const Money& amount1, const Money& amount2);
 
+        Money operator =(const Money& amount1, Money& amount2);
+
         Money(long dollars, int cents);
         //Initializes the object so its value represents an amount with the
         //dollars and cents given by the arguments. If the amount is negative,
