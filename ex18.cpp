@@ -24,7 +24,6 @@ istream& operator >>(istream& ins, Percent& p) {
 		cout << "wrong input" << endl;
 		exit(1);
 	}
-    //This line does not seem to have an effect.
 	p.value = v;
 	return ins;
 }
@@ -33,7 +32,6 @@ int main() {
 	Percent test(99);
 	cout << test << endl;
 	cin >> test;
-    //the value of test has not been changed
 	cout << "New input: " << test << endl;
 	return 0;
 }
