@@ -7,6 +7,8 @@ would use with the definition of Money given in Display 11.4.
 using namespace std;
 
 
+int digit_to_int(char c);
+
 //Class for amounts of money in U.S. currency.
 class Money {
     public:
@@ -28,8 +30,11 @@ class Money {
         //Overloading the - unary operator.
         friend Money operator -(const Money& amount);
 
-        //Overloading the extraction operator
+        //Overloading the extraction operator.
         friend ostream& operator <<(ostream& outs, const Money& amount);
+
+        //Overloading the insertion operator.
+        friend istream& operator >>(istream& ins, Money& amount);
 
         //Function that returns true if the amount of both parameters are the same.
         friend bool equal(const Money& amount1, const Money& amount2);
@@ -118,6 +123,31 @@ ostream& operator <<(ostream& outs, const Money& amount) {
     return outs;
 }
 
+//Overloading the insertion operator.
+istream& operator >>(istream& ins, Money& amount) {
+    char one_char, decimal_point, digit1, digit2;
+    long dollars;
+    int cents;
+    bool neg(false);
+
+    ins >> one_char;
+    if(one_char == '-') {
+        neg = true;
+        ins >> one_char;
+    }
+    ins >> dollars >> decimal_point >> digit1 >> digit2;
+    if(one_char != '$' || decimal_point != '.' || !isdigit(digit1) || !isdigit(digit2)) {
+        cout << "wrong input" << endl;
+        exit(1);
+    }
+    cents = digit_to_int(digit1) * 10 + digit_to_int(digit2);
+    amount.all_cents = dollars * 100 + cents;
+    if(neg) {
+        amount.all_cents = - amount.all_cents;
+    }
+    return ins;
+}
+
 bool equal(const Money& amount1, const Money& amount2) {
     return (amount1.all_cents == amount2.all_cents);
 }
@@ -189,10 +219,10 @@ void Money::output(ostream& outs) const{
 int main() {
     Money m(10, 50);
     Money n(10, 50);
-    cout << m.get_value() << endl;
-    cout << n.get_value() << endl;
+    cout << m << endl;
+    cout << n << endl;
     m = m + n;
-    cout << m.get_value() << endl;
+    cout << m << endl;
 
     if(m == n) {
         cout << "equal" << endl;
@@ -207,13 +237,16 @@ int main() {
     //Because a constructor that takes a double as a parameter, 25.32 is converted in the operation bellow to an Money object.
     m += 25.32;
 
-    cout << m.get_value() << endl;
-
-    m = -m;
-    cout << m.get_value() << endl;
-
     cout << m << endl;
-
+    m = -m;
+    cout << m << endl;
+    cout << m << endl;
+    cin >> m;
+    cout << m;
 
     return 0;
+}
+
+int digit_to_int(char c) {
+    return c - '0';
 }
