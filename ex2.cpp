@@ -12,7 +12,7 @@ class Money {
     public:
         //Constructors
         Money();
-        Money(long dollars);
+        Money(double amount);
         Money(long dollars, int cents);
 
         //Function to add the values of two objects.
@@ -25,10 +25,20 @@ class Money {
         //Overloading the - operator
         friend Money operator -(const Money& amount1, const Money& amount2);
 
+        //Overloading the - unary operator.
+        friend Money operator -(const Money& amount);
+
+        //Overloading the extraction operator
+        friend ostream& operator <<(ostream& outs, const Money& amount);
+
         //Function that returns true if the amount of both parameters are the same.
         friend bool equal(const Money& amount1, const Money& amount2);
         //Overloading the == operator.
         friend bool operator ==(const Money& amount1, const Money& amount2);
+        friend bool operator <(const Money& amount1, const Money& amount2);
+        friend bool operator <=(const Money& amount1, const Money& amount2);
+        friend bool operator >(const Money& amount1, const Money& amount2);
+        friend bool operator >=(const Money& amount1, const Money& amount2);
 
         //Overloading the = operator.
         Money operator =(const Money& other);
@@ -50,9 +60,9 @@ Money::Money() {
     all_cents = 0;
 }
 
-//Constructor with one parameter for the dollars.
-Money::Money(long dollars) {
-    all_cents = 100 * dollars;
+//Constructor that takes the amount as a double.
+Money::Money(double amount) {
+    all_cents = amount * 100;
 }
 
 //Constructor with a parameter for the dollars and one for the cents
@@ -84,12 +94,52 @@ Money operator -(const Money& amount1, const Money& amount2) {
     return sub(amount1, amount2);
 }
 
+//Overloading the - unary operator.
+Money operator -(const Money& amount) {
+    return 0 - amount;
+}
+
+//Overloading the extraction operator.
+ostream& operator <<(ostream& outs, const Money& amount) {
+    bool neg(false);
+    if(amount.all_cents < 0) {
+        neg = true;
+    }
+    long positive_cents(0), dollars(0), cents(0);
+    positive_cents = labs(amount.all_cents);
+    if(amount.all_cents != 0) {
+        dollars = positive_cents / 100;
+        cents = positive_cents % 100;
+    }
+    if(neg) {
+        outs << "-";
+    }
+    outs << "$" << dollars << "." << cents;
+    return outs;
+}
+
 bool equal(const Money& amount1, const Money& amount2) {
     return (amount1.all_cents == amount2.all_cents);
 }
 
 bool operator ==(const Money& amount1, const Money& amount2) {
     return equal(amount1, amount2);
+}
+
+bool operator <(const Money& amount1, const Money& amount2) {
+    return (amount1.all_cents < amount2.all_cents);
+}
+
+bool operator <=(const Money& amount1, const Money& amount2) {
+    return (amount1.all_cents <= amount2.all_cents);
+}
+
+bool operator >(const Money& amount1, const Money& amount2) {
+    return (amount1.all_cents > amount2.all_cents);
+}
+
+bool operator >=(const Money& amount1, const Money& amount2) {
+    return (amount1.all_cents >= amount2.all_cents);
 }
 
 //Overloading operators:
@@ -116,6 +166,25 @@ double Money::get_value() const{
     return all_cents / 100.0;
 }
 
+//Output function
+
+void Money::output(ostream& outs) const{
+     bool neg(false);
+    if(all_cents < 0) {
+        neg = true;
+    }
+    long positive_cents(0), dollars(0), cents(0);
+    positive_cents = labs(all_cents);
+    if(all_cents != 0) {
+        dollars = positive_cents / 100;
+        cents = positive_cents % 100;
+    }
+    if(neg) {
+        outs << "-";
+    }
+    outs << "$" << dollars << "." << cents;
+}
+
 
 int main() {
     Money m(10, 50);
@@ -135,8 +204,16 @@ int main() {
     } else cout << "not equal" << endl;
 
     m -= c;
+    //Because a constructor that takes a double as a parameter, 25.32 is converted in the operation bellow to an Money object.
+    m += 25.32;
 
     cout << m.get_value() << endl;
+
+    m = -m;
+    cout << m.get_value() << endl;
+
+    cout << m << endl;
+
 
     return 0;
 }
