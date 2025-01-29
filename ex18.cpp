@@ -7,16 +7,16 @@ class Percent {
 	public:
 		Percent() : value(0) {};
 		Percent(int n) {value = n;}
-		friend ostream& operator <<(ostream& outs, const Percent p);
-		friend istream& operator >>(istream& ins, Percent p);
+		friend ostream& operator <<(ostream& outs, const Percent& p);
+		friend istream& operator >>(istream& ins, Percent& p);
 };
 
-ostream& operator <<(ostream& outs, const Percent p) {
+ostream& operator <<(ostream& outs, const Percent& p) {
 	outs << p.value << '%';
 	return outs;
 }
 
-istream& operator >>(istream& ins, Percent p) {
+istream& operator >>(istream& ins, Percent& p) {
 	int v;
 	char perc;
 	ins >> v >> perc;
