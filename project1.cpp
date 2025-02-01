@@ -48,14 +48,14 @@ class VectorDouble {
         VectorDouble(VectorDouble& original);
         ~VectorDouble();
         VectorDouble operator =(VectorDouble& original);
-        friend bool operator ==(VectorDouble& vectorA, VectorDouble& vectorB);
+        friend bool operator ==(const VectorDouble& vectorA, const VectorDouble& vectorB);
         void pushBack(double n);
         int capacity() const {return maxCount;}
         int size() const {return count;}
         void reserve(int size);
         void resize(int newSize);
         double valueAt(int i) {return value[i];}
-        void changeValueAt(double n, int i) {value[i] = n;}
+        void changeValueAt(int i, double n) {value[i] = n;}
 };
 
 VectorDouble::VectorDouble() {
@@ -80,7 +80,10 @@ VectorDouble::VectorDouble(VectorDouble& original) {
 }
 
 VectorDouble::~VectorDouble() {
-    delete [] value;
+    if(value) {
+        delete [] value;
+        value = nullptr;
+    }
 }
 
 
@@ -113,6 +116,18 @@ void VectorDouble::resize(int newSize) {
     maxCount = newSize;
 }
 
+bool operator ==(const VectorDouble& vectorA, const VectorDouble& vectorB) {
+    if(vectorA.count != vectorB.count) {
+        return false;
+    }
+    for(int i = 0; i < vectorA.count; i ++) {
+        if(vectorA.value[i] != vectorB.value[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 int main() {
     VectorDouble vc(10);
     vc.pushBack(10.01);
@@ -126,5 +141,9 @@ int main() {
     for(int i = 0; i < vc.size(); i++) {
         cout << vc.valueAt(i) << "\n";
     }
+    VectorDouble vc2(vc);
+    cout << (vc == vc2) << "\n";
+    vc2.changeValueAt(10, 43.3);
+    cout << (vc == vc2) << "\n";
     return 0;
 }
