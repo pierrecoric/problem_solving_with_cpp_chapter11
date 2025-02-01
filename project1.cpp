@@ -51,7 +51,7 @@ class VectorDouble {
         //Destructor.
         ~VectorDouble();
         //Overloading some operators
-        VectorDouble operator =(VectorDouble& original);
+        VectorDouble& operator =(const VectorDouble& original);
         friend bool operator ==(const VectorDouble& vectorA, const VectorDouble& vectorB);
         friend ostream& operator <<(ostream& outs, const VectorDouble& vector);
         //Members functions.
@@ -110,7 +110,7 @@ bool operator ==(const VectorDouble& vectorA, const VectorDouble& vectorB) {
 }
 
 //Overloading =
-VectorDouble VectorDouble::operator =(VectorDouble& rhs) {
+VectorDouble& VectorDouble::operator =(const VectorDouble& rhs) {
     if(this != &rhs) {
         count = rhs.count;
         maxCount = rhs.maxCount;

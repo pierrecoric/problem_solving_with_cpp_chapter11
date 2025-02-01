@@ -39,6 +39,7 @@ using std::istream;
 
 class Rational;
 int gcd(int a, int b);
+int reverseSign(int n);
 
 
 
@@ -67,7 +68,7 @@ class Rational {
         Rational operator -(Rational& rhs);
         Rational operator /(Rational& rhs);
         Rational operator *(Rational& rhs);
-        Rational operator =(Rational& rhs);
+        Rational& operator =(const Rational& rhs);
         //Helper function to normalize the fraction.
         void normalize();
 };
@@ -89,7 +90,10 @@ Rational::Rational(Rational& r) {
 
 //Overloading << and >>
 ostream& operator <<(ostream& outs, const Rational& number) {
-    outs << number.numerator << "/" << number.denominator;
+    if(number.denominator == 1) {
+        outs << number.numerator;
+    }
+    else outs << number.numerator << "/" << number.denominator;
     return outs;
 }
 istream& operator >>(istream& ins, Rational& number) {
@@ -139,6 +143,9 @@ Rational Rational::operator +(Rational& rhs) {
 }
 Rational Rational::operator -(Rational& rhs) {
     Rational temp;
+    temp.numerator = numerator * rhs.denominator - rhs.numerator * denominator;
+    temp.denominator = denominator * rhs.denominator;
+    temp.normalize();
     return temp;
 }
 Rational Rational::operator /(Rational& rhs) {
@@ -150,7 +157,7 @@ Rational Rational::operator *(Rational& rhs) {
     return temp;
 }
 //Overloading the assignemtn operator
-Rational Rational::operator =(Rational& rhs) {
+Rational& Rational::operator =(const Rational& rhs) {
     if(this != &rhs) {
         numerator = rhs.numerator;
         denominator = rhs.denominator;
@@ -159,14 +166,34 @@ Rational Rational::operator =(Rational& rhs) {
 }
 //Helper function to normalize the fraction.
 void Rational::normalize() {
-    int g = gcd(numerator, denominator);
-    numerator = numerator / g;
-    denominator = denominator / g;
+    if(numerator != 0) {
+        int g = gcd(numerator, denominator);
+        numerator = numerator / g;
+        denominator = denominator / g;
+    }
+    else {
+        numerator = 0;
+        denominator = 1;
+    }
+    if(numerator < 0 && denominator < 0) {
+        numerator = reverseSign(numerator);
+        denominator = reverseSign(denominator);
+    }
+    else if(denominator < 0) {
+        numerator = reverseSign(numerator);
+        denominator = reverseSign(denominator);
+    }
 }
 
 int gcd(int a, int b) {
     if(a == b) {
         return a;
+    }
+    if(a < 0) {
+        a = reverseSign(a);
+    }
+    if(b < 0) {
+        b = reverseSign(b);
     }
     int gcd;
     gcd = (a < b) ? a : b;
@@ -181,13 +208,13 @@ int gcd(int a, int b) {
 
 
 int main() {
-    Rational r;
-    cin >> r;
-    cout << r << "\n";
-    r.normalize();
-    cout << r << "\n";
     Rational a, b;
     cin >> a;
     cin >> b;
+    a = a - b;
     cout << a;
+}
+
+int reverseSign(int n) {
+    return -n;
 }
