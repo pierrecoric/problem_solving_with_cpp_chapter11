@@ -58,7 +58,7 @@ Pairs operator *(Pairs& a, int b) {
 }
 
 
-
+//Ready
 
 int main() {
     Pairs a(10,4);

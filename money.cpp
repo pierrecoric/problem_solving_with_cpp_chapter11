@@ -147,6 +147,7 @@ Money Money::percent(double percentFigure) const {
     return allCents / 100 * mult;
 }
 
+//Main function
 int main() {
     return 0;
 }
