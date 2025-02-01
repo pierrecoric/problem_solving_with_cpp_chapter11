@@ -128,6 +128,18 @@ bool operator ==(const VectorDouble& vectorA, const VectorDouble& vectorB) {
     return true;
 }
 
+VectorDouble VectorDouble::operator =(VectorDouble& rhs) {
+    if(this != &rhs) {
+        count = rhs.count;
+        maxCount = rhs.maxCount;
+        value = new double [maxCount];
+        for(int i = 0; i < count; i++) {
+            value[i] = rhs.value[i];
+        }
+    }
+    return *this;
+}
+
 int main() {
     VectorDouble vc(10);
     vc.pushBack(10.01);
@@ -144,6 +156,8 @@ int main() {
     VectorDouble vc2(vc);
     cout << (vc == vc2) << "\n";
     vc2.changeValueAt(10, 43.3);
+    cout << (vc == vc2) << "\n";
+    vc = vc2;
     cout << (vc == vc2) << "\n";
     return 0;
 }
