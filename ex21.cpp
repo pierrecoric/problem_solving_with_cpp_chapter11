@@ -1,5 +1,5 @@
 #include <iostream>
-using namespace std;
+using std::cout, std::cin, std::ostream;
 
 const int MAX_SIZE(50);
 
@@ -53,7 +53,7 @@ ostream& operator <<(ostream& outs, const TemperatureList& t) {
 double TemperatureList::getTemperatureAt(int n) {
     if(n >= 0 || n < MAX_SIZE) {
         return list[n];
-    } else cout << "Wrong input." << endl;
+    } else cout << "Wrong input.\n";
     return 0;
 }
 
@@ -65,13 +65,13 @@ int main() {
         cin >> ans;
         list.addTemperature(ans);
     } 
-    cout << "output: " << endl;
-    cout << list << endl;
+    cout << "output: \n";
+    cout << list << "\n";
     TemperatureList list2(list);
-    cout << list2 << endl;
+    cout << list2 << "\n";
 
-    cout << endl << list.getSize() << endl;
-    cout << endl << list2.getSize() << endl;
+    cout << "\n" << list.getSize() << "\n";
+    cout << "\n" << list2.getSize() << "\n";
 
     return 0;
 }
