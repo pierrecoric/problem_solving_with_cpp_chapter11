@@ -46,7 +46,7 @@ class VectorDouble {
         VectorDouble();
         VectorDouble(int elements);
         VectorDouble(VectorDouble& original);
-        ~VectorDouble(){};
+        ~VectorDouble();
         VectorDouble operator =(VectorDouble& original);
         friend bool operator ==(VectorDouble& vectorA, VectorDouble& vectorB);
         void pushBack(double n);
@@ -69,6 +69,20 @@ VectorDouble::VectorDouble(int elements) {
     maxCount = elements;
     count = 0;
 }
+
+VectorDouble::VectorDouble(VectorDouble& original) {
+    count = original.count;
+    maxCount = original.maxCount;
+    value = new double [maxCount];
+    for(int i = 0; i < count; i++) {
+        value[i] = original.value[i];
+    }
+}
+
+VectorDouble::~VectorDouble() {
+    delete [] value;
+}
+
 
 
 void VectorDouble::pushBack(double n) {
