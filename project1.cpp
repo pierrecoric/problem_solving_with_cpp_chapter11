@@ -36,6 +36,7 @@ the material which tells you how to do that.)
 
 #include <iostream>
 using std::cout;
+using std::ostream;
 
 class VectorDouble {
     private:
@@ -43,12 +44,17 @@ class VectorDouble {
         int maxCount;
         int count;
     public:
+        //Constructors.
         VectorDouble();
         VectorDouble(int elements);
         VectorDouble(VectorDouble& original);
+        //Destructor.
         ~VectorDouble();
+        //Overloading some operators
         VectorDouble operator =(VectorDouble& original);
         friend bool operator ==(const VectorDouble& vectorA, const VectorDouble& vectorB);
+        friend ostream& operator <<(ostream& outs, const VectorDouble& vector);
+        //Members functions.
         void pushBack(double n);
         int capacity() const {return maxCount;}
         int size() const {return count;}
@@ -58,18 +64,21 @@ class VectorDouble {
         void changeValueAt(int i, double n) {value[i] = n;}
 };
 
+//Simple constructor.
 VectorDouble::VectorDouble() {
     value = nullptr;
     maxCount = 0;
     count  = 0;
 }
 
+//Constructor that specifies a size.
 VectorDouble::VectorDouble(int elements) {
     value = new double[elements];
     maxCount = elements;
     count = 0;
 }
 
+//Copy constructor.
 VectorDouble::VectorDouble(VectorDouble& original) {
     count = original.count;
     maxCount = original.maxCount;
@@ -79,6 +88,7 @@ VectorDouble::VectorDouble(VectorDouble& original) {
     }
 }
 
+//Destructor.
 VectorDouble::~VectorDouble() {
     if(value) {
         delete [] value;
@@ -86,36 +96,7 @@ VectorDouble::~VectorDouble() {
     }
 }
 
-
-
-void VectorDouble::pushBack(double n) {
-    if(count < maxCount) {
-        value[count] = n;
-        count ++;
-    }
-    else {
-        resize(2 * maxCount);
-        pushBack(n);
-    }
-}
-
-void VectorDouble::reserve(int size) {
-    if((maxCount - count) < size) {
-        resize(size);
-    }
-}
-
-void VectorDouble::resize(int newSize) {
-    double* temp;
-    temp = new double[newSize];
-    for(int i = 0; i < count; i++) {
-        temp[i] = value[i];
-    }
-    delete value;
-    value = temp;
-    maxCount = newSize;
-}
-
+//Overloading ==
 bool operator ==(const VectorDouble& vectorA, const VectorDouble& vectorB) {
     if(vectorA.count != vectorB.count) {
         return false;
@@ -128,6 +109,7 @@ bool operator ==(const VectorDouble& vectorA, const VectorDouble& vectorB) {
     return true;
 }
 
+//Overloading =
 VectorDouble VectorDouble::operator =(VectorDouble& rhs) {
     if(this != &rhs) {
         count = rhs.count;
@@ -140,6 +122,51 @@ VectorDouble VectorDouble::operator =(VectorDouble& rhs) {
     return *this;
 }
 
+//Overloading <<
+ostream& operator <<(ostream& outs, const VectorDouble& vector) {
+    outs << "[";
+    for(int i = 0; i < vector.count; i++) {
+        outs << vector.value[i];
+        if (i < vector.count - 1) {
+            outs << ", ";
+        }
+    }
+    outs << "]";
+    return outs;
+}
+
+//Push back function.
+void VectorDouble::pushBack(double n) {
+    if(count < maxCount) {
+        value[count] = n;
+        count ++;
+    }
+    else {
+        resize(2 * maxCount);
+        pushBack(n);
+    }
+}
+
+//Reserve function.
+void VectorDouble::reserve(int size) {
+    if((maxCount - count) < size) {
+        resize(size);
+    }
+}
+
+//Resize function.
+void VectorDouble::resize(int newSize) {
+    double* temp;
+    temp = new double[newSize];
+    for(int i = 0; i < count; i++) {
+        temp[i] = value[i];
+    }
+    delete value;
+    value = temp;
+    maxCount = newSize;
+}
+
+//Test function.
 int main() {
     VectorDouble vc(10);
     vc.pushBack(10.01);
@@ -159,5 +186,6 @@ int main() {
     cout << (vc == vc2) << "\n";
     vc = vc2;
     cout << (vc == vc2) << "\n";
+    cout << vc << "\n";
     return 0;
 }
