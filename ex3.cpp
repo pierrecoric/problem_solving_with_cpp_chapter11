@@ -57,9 +57,6 @@ Pairs operator *(Pairs& a, int b) {
     return temp;
 }
 
-
-//Ready
-
 int main() {
     Pairs a(10,4);
     cout << a << endl; 
