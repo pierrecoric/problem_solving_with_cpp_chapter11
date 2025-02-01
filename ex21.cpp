@@ -1,5 +1,5 @@
 #include <iostream>
-using std::cout, std::cin, std::ostream;
+using std::cout, std::cin, std::ostream, std::array;
 
 const int MAX_SIZE(50);
 
@@ -58,6 +58,9 @@ double TemperatureList::getTemperatureAt(int n) {
 }
 
 int main() {
+    array<int, 256> test;
+    test[0] = 3;
+    cout << test[0] << "\n";
     TemperatureList list;
     for(int i = 0; i < 5; i++) {
         cout << "Enter temperature point #" << i << ": ";
