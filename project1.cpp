@@ -46,7 +46,7 @@ class VectorDouble {
         VectorDouble();
         VectorDouble(int elements);
         VectorDouble(VectorDouble& original);
-        ~VectorDouble();
+        ~VectorDouble(){};
         VectorDouble operator =(VectorDouble& original);
         friend bool operator ==(VectorDouble& vectorA, VectorDouble& vectorB);
         void pushBack(double n);
@@ -59,7 +59,7 @@ class VectorDouble {
 };
 
 VectorDouble::VectorDouble() {
-    value = new double;
+    value = nullptr;
     maxCount = 0;
     count  = 0;
 }
@@ -100,6 +100,17 @@ void VectorDouble::resize(int newSize) {
 }
 
 int main() {
-    VectorDouble(10);
+    VectorDouble vc(10);
+    vc.pushBack(10.01);
+    cout << vc.valueAt(0) << "\n";
+    for(int i = 0; i < 50; i++) {
+        vc.pushBack(i+0.50);
+    }
+    cout << vc.size() << "\n";
+    cout << vc.capacity() << "\n";
+    
+    for(int i = 0; i < vc.size(); i++) {
+        cout << vc.valueAt(i) << "\n";
+    }
     return 0;
 }
