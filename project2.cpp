@@ -30,3 +30,164 @@ as possible. For example, after normalization 4/-8 would be repre-
 sented the same as -1/2. You should also write a test program to test
 your class.)
 */
+
+#include <iostream>
+using std::cout;
+using std::cin;
+using std::ostream;
+using std::istream;
+
+class Rational;
+int gcd(int a, int b);
+
+
+
+
+class Rational {
+    private:
+        int numerator;
+        int denominator;
+    public:
+        Rational() : numerator(0), denominator(1) {};
+        Rational(int n);
+        Rational(int n, int d);
+        Rational(Rational& r);
+        ~Rational() {};
+        //Overloading << and >>
+        friend ostream& operator <<(ostream& outs, const Rational& number);
+        friend istream& operator >>(istream& outs, Rational& number);
+        //Overloading operators:
+        friend bool operator ==(Rational& number1, Rational& number2);
+        friend bool operator <(const Rational& number1, Rational& number2);
+        friend bool operator <=(const Rational& number1, Rational& number2);
+        friend bool operator >(const Rational& number1, Rational& number2);
+        friend bool operator >=(const Rational& number1, Rational& number2);
+        //Overloading arithmetics operator.
+        Rational operator +(Rational& rhs);
+        Rational operator -(Rational& rhs);
+        Rational operator /(Rational& rhs);
+        Rational operator *(Rational& rhs);
+        Rational operator =(Rational& rhs);
+        //Helper function to normalize the fraction.
+        void normalize();
+};
+
+Rational::Rational(int n) {
+    denominator = 1;
+    numerator = n;
+}
+Rational::Rational(int n, int d) {
+    if(denominator != 0) {
+        denominator = d;
+    } else denominator = 1;
+    numerator = n;
+}
+Rational::Rational(Rational& r) {
+    numerator = r.numerator;
+    denominator = r.denominator;
+}
+
+//Overloading << and >>
+ostream& operator <<(ostream& outs, const Rational& number) {
+    outs << number.numerator << "/" << number.denominator;
+    return outs;
+}
+istream& operator >>(istream& ins, Rational& number) {
+    int n, d;
+    char t;
+    ins >> n >> t >> d;
+    if(d == 0 || t != '/') {
+        cout << "Wrong input. I set the number to 0 \n";
+        n = 0;
+        d = 1;
+        t = '/';
+    }
+    else {
+        number.numerator = n;
+        number.denominator = d;
+    }
+    return ins;
+}
+//Overloading operators:
+bool operator ==(Rational& number1, Rational& number2) {
+    number1.normalize();
+    number2.normalize();
+    if(number1.denominator == number2.denominator && number1.numerator == number2.numerator) {
+        return true;
+    } else return false;
+}
+
+bool operator <(const Rational& number1, Rational& number2) {
+    return false;
+}
+bool operator <=(const Rational& number1, Rational& number2) {
+    return false;
+}
+bool operator >(const Rational& number1, Rational& number2) {
+    return false;
+}
+bool operator >=(const Rational& number1, Rational& number2) {
+    return false;
+}
+//Overloading arithmetics operator.
+Rational Rational::operator +(Rational& rhs) {
+    Rational temp;
+    temp.numerator = numerator * rhs.denominator + rhs.numerator * denominator;
+    temp.denominator = denominator * rhs.denominator;
+    temp.normalize();
+    return temp;
+}
+Rational Rational::operator -(Rational& rhs) {
+    Rational temp;
+    return temp;
+}
+Rational Rational::operator /(Rational& rhs) {
+    Rational temp;
+    return temp;
+}
+Rational Rational::operator *(Rational& rhs) {
+    Rational temp;
+    return temp;
+}
+//Overloading the assignemtn operator
+Rational Rational::operator =(Rational& rhs) {
+    if(this != &rhs) {
+        numerator = rhs.numerator;
+        denominator = rhs.denominator;
+    }
+    return *this;
+}
+//Helper function to normalize the fraction.
+void Rational::normalize() {
+    int g = gcd(numerator, denominator);
+    numerator = numerator / g;
+    denominator = denominator / g;
+}
+
+int gcd(int a, int b) {
+    if(a == b) {
+        return a;
+    }
+    int gcd;
+    gcd = (a < b) ? a : b;
+    while(gcd > 0) {
+        if(a % gcd == 0 && b % gcd == 0) {
+            break;
+        }
+        gcd --;
+    }
+    return gcd;
+}
+
+
+int main() {
+    Rational r;
+    cin >> r;
+    cout << r << "\n";
+    r.normalize();
+    cout << r << "\n";
+    Rational a, b;
+    cin >> a;
+    cin >> b;
+    cout << a;
+}
