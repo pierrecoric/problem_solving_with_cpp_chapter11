@@ -272,7 +272,12 @@ RationalVec::RationalVec(Rational& r) {
 
 //Copy constructor.
 RationalVec::RationalVec(RationalVec& rv) {
-
+    size = rv.size;
+    capacity = rv.capacity;
+    value = new Rational [capacity];
+    for(int i = 0; i < size; i++) {
+        value[i] = rv.value[i];
+    }
 }
 
 //Destructor.
@@ -295,9 +300,18 @@ void RationalVec::pushBack(Rational r) {
 }
 
 RationalVec& RationalVec::operator =(const RationalVec& rhs) {
+    if(this != &rhs) {
+        size = rhs.size;
+        capacity = rhs.capacity;
+        value = new Rational [capacity];
+        for(int i = 0; i < size; i++) {
+            value[i] = rhs.value[i];
+        }
+    }
     return *this;
 }
 
+//Overloading ==
 bool operator ==(const RationalVec& vectorA, const RationalVec& vectorB) {
     if(vectorA.size != vectorB.size) {
         return false;
@@ -312,6 +326,7 @@ bool operator ==(const RationalVec& vectorA, const RationalVec& vectorB) {
     return true;
 }
 
+//Overloading <<
 ostream& operator <<(ostream& outs, const RationalVec& vector) {
     outs << "[";
     for(int i = 0; i < vector.size; i++) {
@@ -406,6 +421,9 @@ int main() {
     vec.pushBack(b);
     vec.pushBack(c);
     cout << vec << "\n";
+    RationalVec vec2(vec);
+    cout << vec2;
+    cout << (vec == vec2);
 }
 
 int reverseSign(int n) {
