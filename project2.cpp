@@ -55,7 +55,7 @@ class Rational {
         friend ostream& operator <<(ostream& outs, const Rational& number);
         friend istream& operator >>(istream& outs, Rational& number);
         //Overloading operators:
-        friend bool operator ==(Rational& number1, Rational& number2);
+        friend bool operator ==(const Rational& number1, const Rational& number2);
         friend bool operator <(const Rational& number1, Rational& number2);
         friend bool operator <=(const Rational& number1, Rational& number2);
         friend bool operator >(const Rational& number1, Rational& number2);
@@ -115,12 +115,8 @@ istream& operator >>(istream& ins, Rational& number) {
     return ins;
 }
 //Overloading operators:
-bool operator ==(Rational& number1, Rational& number2) {
-    number1.normalize();
-    number2.normalize();
-    if(number1.denominator == number2.denominator && number1.numerator == number2.numerator) {
-        return true;
-    } else return false;
+bool operator ==(const Rational& number1, const Rational& number2) {
+    return ((number1.numerator * number2.denominator) == (number2.numerator * number1.denominator));
 }
 
 //Overloading comparison operators.
@@ -187,6 +183,7 @@ Rational Rational::operator /(Rational& rhs) {
 // *
 Rational Rational::operator *(Rational& rhs) {
     Rational temp;
+
     return temp;
 }
 
@@ -247,7 +244,7 @@ int main() {
     Rational a, b;
     cin >> a;
     cin >> b;
-    cout << (a <= b) << "\n";
+    cout << (a == b) << "\n";
 }
 
 int reverseSign(int n) {
