@@ -40,6 +40,7 @@ using std::istream;
 class Rational;
 int gcd(int a, int b);
 int reverseSign(int n);
+Rational operationFun(istream& ins);
 
 class Rational {
     private:
@@ -178,12 +179,17 @@ Rational Rational::operator -(Rational& rhs) {
 // /
 Rational Rational::operator /(Rational& rhs) {
     Rational temp;
+    temp.numerator = numerator / rhs.numerator;
+    temp.denominator = denominator / rhs.denominator;
+    temp.normalize();
     return temp;
 }
 // *
 Rational Rational::operator *(Rational& rhs) {
     Rational temp;
-
+    temp.numerator = numerator * rhs.numerator;
+    temp.denominator = denominator * rhs.denominator;
+    temp.normalize();
     return temp;
 }
 
@@ -239,14 +245,48 @@ int gcd(int a, int b) {
     return gcd;
 }
 
+
+Rational operationFun(istream& ins) {
+    Rational a, b;
+    char oper;
+    ins >> a >> oper >> b;
+    switch (oper) {
+        case '+':
+            return a + b;
+            break;
+
+        case '-':
+            return a - b;
+            break;
+
+        case '/':
+            return a / b;
+            break;
+
+        case '*':
+            return a * b;
+            break;
+    
+        default:
+            cout << "wron input\n";
+            a = (0,1);
+            return a;
+            break;
+    }
+}
+
 //Test
 int main() {
     Rational a, b;
     cin >> a;
     cin >> b;
-    cout << (a == b) << "\n";
+    cout << a * b << "\n";
+    Rational c = operationFun(cin);
+    cout << c << "\n";
 }
 
 int reverseSign(int n) {
     return -n;
 }
+
+
