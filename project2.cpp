@@ -41,9 +41,6 @@ class Rational;
 int gcd(int a, int b);
 int reverseSign(int n);
 
-
-
-
 class Rational {
     private:
         int numerator;
@@ -73,22 +70,26 @@ class Rational {
         void normalize();
 };
 
+//Default construtor.
 Rational::Rational(int n) {
     denominator = 1;
     numerator = n;
 }
+//Constructor to specify the numerator and the denominator.
 Rational::Rational(int n, int d) {
     if(denominator != 0) {
         denominator = d;
     } else denominator = 1;
     numerator = n;
 }
+//Copy constructor.
 Rational::Rational(Rational& r) {
     numerator = r.numerator;
     denominator = r.denominator;
 }
 
 //Overloading << and >>
+//<<
 ostream& operator <<(ostream& outs, const Rational& number) {
     if(number.denominator == 1) {
         outs << number.numerator;
@@ -96,6 +97,7 @@ ostream& operator <<(ostream& outs, const Rational& number) {
     else outs << number.numerator << "/" << number.denominator;
     return outs;
 }
+//>>
 istream& operator >>(istream& ins, Rational& number) {
     int n, d;
     char t;
@@ -121,19 +123,47 @@ bool operator ==(Rational& number1, Rational& number2) {
     } else return false;
 }
 
+//Overloading comparison operators.
+// <
 bool operator <(const Rational& number1, Rational& number2) {
-    return false;
+    int num1(number1.numerator), num2(number2.numerator);
+    int den1(number1.denominator), den2(number2.denominator);
+    num1 *= den2;
+    num2 *= den1;
+    den1 *= den2;
+    return num1 < num2;
 }
+// <=
 bool operator <=(const Rational& number1, Rational& number2) {
-    return false;
+    int num1(number1.numerator), num2(number2.numerator);
+    int den1(number1.denominator), den2(number2.denominator);
+    num1 *= den2;
+    num2 *= den1;
+    den1 *= den2;
+    return num1 <= num2;
+    
 }
+// >
 bool operator >(const Rational& number1, Rational& number2) {
-    return false;
+    int num1(number1.numerator), num2(number2.numerator);
+    int den1(number1.denominator), den2(number2.denominator);
+    num1 *= den2;
+    num2 *= den1;
+    den1 *= den2;
+    return num1 > num2;
 }
+// >=
 bool operator >=(const Rational& number1, Rational& number2) {
-    return false;
+    int num1(number1.numerator), num2(number2.numerator);
+    int den1(number1.denominator), den2(number2.denominator);
+    num1 *= den2;
+    num2 *= den1;
+    den1 *= den2;
+    return num1 >= num2;
 }
+
 //Overloading arithmetics operator.
+//+
 Rational Rational::operator +(Rational& rhs) {
     Rational temp;
     temp.numerator = numerator * rhs.denominator + rhs.numerator * denominator;
@@ -141,6 +171,7 @@ Rational Rational::operator +(Rational& rhs) {
     temp.normalize();
     return temp;
 }
+//-
 Rational Rational::operator -(Rational& rhs) {
     Rational temp;
     temp.numerator = numerator * rhs.denominator - rhs.numerator * denominator;
@@ -148,14 +179,17 @@ Rational Rational::operator -(Rational& rhs) {
     temp.normalize();
     return temp;
 }
+// /
 Rational Rational::operator /(Rational& rhs) {
     Rational temp;
     return temp;
 }
+// *
 Rational Rational::operator *(Rational& rhs) {
     Rational temp;
     return temp;
 }
+
 //Overloading the assignemtn operator
 Rational& Rational::operator =(const Rational& rhs) {
     if(this != &rhs) {
@@ -164,6 +198,7 @@ Rational& Rational::operator =(const Rational& rhs) {
     }
     return *this;
 }
+
 //Helper function to normalize the fraction.
 void Rational::normalize() {
     if(numerator != 0) {
@@ -185,6 +220,7 @@ void Rational::normalize() {
     }
 }
 
+//Helper function that returns the gcd.
 int gcd(int a, int b) {
     if(a == b) {
         return a;
@@ -206,13 +242,12 @@ int gcd(int a, int b) {
     return gcd;
 }
 
-
+//Test
 int main() {
     Rational a, b;
     cin >> a;
     cin >> b;
-    a = a - b;
-    cout << a;
+    cout << (a <= b) << "\n";
 }
 
 int reverseSign(int n) {
