@@ -38,6 +38,7 @@ using std::ostream;
 using std::istream;
 
 class Rational;
+class RationalVec;
 int gcd(int a, int b);
 int reverseSign(int n);
 Rational operationFun(istream& ins);
@@ -57,6 +58,7 @@ class Rational {
         friend istream& operator >>(istream& outs, Rational& number);
         //Overloading operators:
         friend bool operator ==(const Rational& number1, const Rational& number2);
+        friend bool operator !=(const Rational& number1, const Rational& number2);
         friend bool operator <(const Rational& number1, Rational& number2);
         friend bool operator <=(const Rational& number1, Rational& number2);
         friend bool operator >(const Rational& number1, Rational& number2);
@@ -118,6 +120,11 @@ istream& operator >>(istream& ins, Rational& number) {
 //Overloading operators:
 bool operator ==(const Rational& number1, const Rational& number2) {
     return ((number1.numerator * number2.denominator) == (number2.numerator * number1.denominator));
+}
+
+//Overloading != operartor.
+bool operator !=(const Rational& number1, const Rational& number2) {
+    return ((number1.numerator * number2.denominator) != (number2.numerator * number1.denominator));
 }
 
 //Overloading comparison operators.
@@ -223,6 +230,119 @@ void Rational::normalize() {
     }
 }
 
+class RationalVec {
+    private:
+        Rational* value;
+        int size;
+        int capacity;
+    public:
+        RationalVec() : value(nullptr), size(0), capacity(0) {};
+        RationalVec(int elements);
+        RationalVec(Rational& r);
+        RationalVec(RationalVec& rv);
+        ~RationalVec();
+        //Overloading some operators
+        RationalVec& operator =(const RationalVec& rhs);
+        friend bool operator ==(const RationalVec& vectorA, const RationalVec& vectorB);
+        friend ostream& operator <<(ostream& outs, const RationalVec& vector);
+        //Members functions.
+        void pushBack(Rational r);
+        int getCapacity() const {return capacity;}
+        int getSize() const {return size;}
+        void reserve(int needed);
+        void resize(int newSize);
+        Rational valueAt(int i) {return value[i];}
+        void changeValueAt(int i, Rational& r) {value[i] = r;}
+};
+
+//Constructor that specifies the original capacity;
+RationalVec::RationalVec(int elements) {
+    value = new Rational[elements];
+    size = 0;
+    capacity = elements;
+}
+
+//Constructor that puts into the vector one Rational number.
+RationalVec::RationalVec(Rational& r) {
+    value = new Rational;
+    size = 0;
+    capacity = 0;
+    pushBack(r);
+}
+
+//Copy constructor.
+RationalVec::RationalVec(RationalVec& rv) {
+
+}
+
+//Destructor.
+RationalVec::~RationalVec() {
+    delete [] value;
+}
+
+//Push back function.
+void RationalVec::pushBack(Rational r) {
+    if(size < capacity) {
+        value[size] = r;
+        size ++;
+    }
+    else {
+        if(capacity == 0) {
+            resize(1);
+        } else resize(2 * size);
+        pushBack(r);
+    }
+}
+
+RationalVec& RationalVec::operator =(const RationalVec& rhs) {
+    return *this;
+}
+
+bool operator ==(const RationalVec& vectorA, const RationalVec& vectorB) {
+    if(vectorA.size != vectorB.size) {
+        return false;
+    }
+    else {
+        for(int i = 0; i < vectorA.size; i++) {
+            if(vectorA.value[i] != vectorB.value[i]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+ostream& operator <<(ostream& outs, const RationalVec& vector) {
+    outs << "[";
+    for(int i = 0; i < vector.size; i++) {
+        outs << vector.value[i];
+        if(i < vector.size - 1) {
+            outs << ", ";
+        }
+    }
+    outs << "]";
+    return outs;
+}
+
+//Reserve function.
+void RationalVec::reserve(int needed) {
+    if((capacity - size) > needed) {
+        return;
+    } else resize(size + needed);
+}
+
+//Resize function
+void RationalVec::resize(int newSize) {
+    Rational* temp;
+    temp = new Rational[newSize];
+    for(int i = 0; i < size; i++) {
+        temp[i] = value[i];
+    }
+    delete [] value;
+    value = temp;
+    capacity = newSize;
+}
+
 //Helper function that returns the gcd.
 int gcd(int a, int b) {
     if(a == b) {
@@ -277,12 +397,15 @@ Rational operationFun(istream& ins) {
 
 //Test
 int main() {
-    Rational a, b;
+    Rational a, b, c;
     cin >> a;
     cin >> b;
-    cout << a * b << "\n";
-    Rational c = operationFun(cin);
-    cout << c << "\n";
+    cin >> c;
+    RationalVec vec;
+    vec.pushBack(a);
+    vec.pushBack(b);
+    vec.pushBack(c);
+    cout << vec << "\n";
 }
 
 int reverseSign(int n) {

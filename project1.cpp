@@ -142,7 +142,9 @@ void VectorDouble::pushBack(double n) {
         count ++;
     }
     else {
-        resize(2 * maxCount);
+        if(maxCount == 0) {
+            resize(1);
+        } resize(2 * maxCount);
         pushBack(n);
     }
 }
@@ -168,6 +170,8 @@ void VectorDouble::resize(int newSize) {
 
 //Test function.
 int main() {
+    VectorDouble vca;
+    vca.pushBack(0.5);
     VectorDouble vc(10);
     vc.pushBack(10.01);
     cout << vc.valueAt(0) << "\n";
