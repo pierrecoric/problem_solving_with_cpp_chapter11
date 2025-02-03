@@ -55,16 +55,19 @@ class Complex {
         friend bool operator !=(const Complex& conmplex1, const Complex& complex2);
 };
 
+//Constructor with one parameter.
 Complex::Complex(double r) {
     real = r;
     imaginary = 0;
 }
 
+//Constructor with two parameters
 Complex::Complex(double r, double i) {
     real = r;
     imaginary = i;
 }
 
+//Copy constructor.
 Complex::Complex(const Complex& c) {
     real = c.real;
     imaginary = c.imaginary;
@@ -73,11 +76,13 @@ Complex::Complex(const Complex& c) {
 //Defining i.
 const Complex i(0,1);
 
+//Overloading <<.
 ostream& operator <<(ostream& outs, const Complex& c) {
     outs << "(" << c.real << "+" << c.imaginary << "*i)";
     return outs;
 }
 
+//Overloading >>
 istream& operator >>(istream& ins, Complex& c) {
     //a+b*i
     char plus, mult, ii;
@@ -94,40 +99,41 @@ istream& operator >>(istream& ins, Complex& c) {
 }
 
 //Overloading arithmetics operator.
+//+
 Complex Complex::operator +(const Complex& rhs) {
     Complex temp;
     temp.imaginary = imaginary + rhs.imaginary;
     temp.real = real + rhs.real;
     return temp;
 }
-
+//-
 Complex Complex::operator -(const Complex& rhs) {
     Complex temp;
     temp.imaginary = imaginary - rhs.imaginary;
     temp.real = real - rhs.real;
     return temp;
 }
-
+// /
 Complex Complex::operator /(const Complex& rhs) {
     Complex temp;
     temp.real = (real / rhs.real) - (imaginary / rhs.imaginary);
     temp.imaginary = (real / rhs.imaginary) - (imaginary / rhs.real);
     return temp;
 }
-
+// *
 Complex Complex::operator *(const Complex& rhs) {
     Complex temp;
     temp.real = (real * rhs.real) - (imaginary * rhs.imaginary);
     temp.imaginary = (real * rhs.imaginary) - (imaginary * rhs.real);
     return temp;
 }
-
+// ==
 bool operator ==(const Complex& conmplex1, const Complex& complex2) {
     if(conmplex1.real == complex2.real && conmplex1.imaginary == complex2.imaginary) {
         return true;
     } else return false;
 }
-
+//!=
 bool operator !=(const Complex& conmplex1, const Complex& complex2) {
     if(conmplex1.real != complex2.real || conmplex1.imaginary == complex2.imaginary) {
         return false;
